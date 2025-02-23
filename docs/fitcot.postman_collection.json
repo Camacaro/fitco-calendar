@@ -1,0 +1,533 @@
+{
+	"info": {
+		"_postman_id": "281abbcb-fb40-4bcf-b140-1b85c6bde53a",
+		"name": "fitcot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6252765"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let resp = pm.response.json();",
+									"const token = resp.user?.token || '';",
+									"if (token) {",
+									"    pm.environment.set(\"token\", token);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ori@gmail.com\",\n    \"password\": \"132\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_auth_service}}/api/auth/login",
+							"host": [
+								"{{url_auth_service}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ori@gmail.com\",\n    \"password\": \"123456\",\n    \"username\": \"oriana\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_auth_service}}/api/auth/register",
+							"host": [
+								"{{url_auth_service}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify token",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Beare {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_auth_service}}/api/auth/verify",
+							"host": [
+								"{{url_auth_service}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh token",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Beare {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_auth_service}}/api/auth/refresh",
+							"host": [
+								"{{url_auth_service}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "calendar",
+			"item": [
+				{
+					"name": "Events",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Proyecto 2\",\n    \"notes\": \"es para la entrevista 2\",\n    \"start_date\": \"2025-02-22T03:00:00.000Z\",\n    \"end_date\": \"2025-02-22T03:00:00.000Z\",\n    \"user_id\": \"d10f0fe2-d2ce-4c49-86f1-f0221b76f432\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_calender_service}}/events",
+							"host": [
+								"{{url_calender_service}}"
+							],
+							"path": [
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Events",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_calender_service}}/events",
+							"host": [
+								"{{url_calender_service}}"
+							],
+							"path": [
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_calender_service}}/events/:id",
+							"host": [
+								"{{url_calender_service}}"
+							],
+							"path": [
+								"events",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "eb923d27-6e83-4f0e-acd8-b5cfc15943e8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Proyecto 1.2.3.4\",\n    \"notes\": \"es para la entrevista 4\",\n    \"start_date\": \"2025-02-22T03:00:00.000Z\",\n    \"end_date\": \"2025-02-23T03:00:00.000Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_calender_service}}/events/:id",
+							"host": [
+								"{{url_calender_service}}"
+							],
+							"path": [
+								"events",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "eb923d27-6e83-4f0e-acd8-b5cfc15943e8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url_calender_service}}/events/:id",
+							"host": [
+								"{{url_calender_service}}"
+							],
+							"path": [
+								"events",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "b9a336c2-0a12-4db4-b3be-522fb830d172"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Events By User id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_calender_service}}/events/users/:user_id",
+							"host": [
+								"{{url_calender_service}}"
+							],
+							"path": [
+								"events",
+								"users",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "d10f0fe2-d2ce-4c49-86f1-f0221b76f432"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BFF",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ori@gmail.com\",\n    \"password\": \"132\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_bff_service}}/api/login",
+							"host": [
+								"{{url_bff_service}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"mario@gmail.com\",\n    \"password\": \"123456\",\n    \"username\": \"mario\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_bff_service}}/api/register",
+							"host": [
+								"{{url_bff_service}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Beare {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_bff_service}}/api/refresh-token",
+							"host": [
+								"{{url_bff_service}}"
+							],
+							"path": [
+								"api",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_bff_service}}/api/events/:id",
+							"host": [
+								"{{url_bff_service}}"
+							],
+							"path": [
+								"api",
+								"events",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "eb923d27-6e83-4f0e-acd8-b5cfc15943e8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Proyecto 4\",\n    \"notes\": \"es para la entrevista 4\",\n    \"start_date\": \"2025-02-22T03:00:00.000Z\",\n    \"end_date\": \"2025-02-22T03:00:00.000Z\",\n    \"user_id\": \"d10f0fe2-d2ce-4c49-86f1-f0221b76f432\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_bff_service}}/api/events",
+							"host": [
+								"{{url_bff_service}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Proyecto 4\",\n    \"notes\": \"es para la entrevista 4\",\n    \"start_date\": \"2025-02-22T03:00:00.000Z\",\n    \"end_date\": \"2025-02-22T03:00:00.000Z\",\n    \"user_id\": \"d10f0fe2-d2ce-4c49-86f1-f0221b76f432\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3005/api/events",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3005",
+									"path": [
+										"api",
+										"events"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "226"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"e2-qa//qWA+rgjSevqwizYK2bTnDik\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 23 Feb 2025 19:26:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"uuid\": \"b3cce55f-43ab-415a-9476-e4e8bd0faa87\",\n    \"title\": \"Proyecto 4\",\n    \"notes\": \"es para la entrevista 4\",\n    \"startDate\": \"2025-02-22T03:00:00.000Z\",\n    \"endDate\": \"2025-02-22T03:00:00.000Z\",\n    \"userId\": \"d10f0fe2-d2ce-4c49-86f1-f0221b76f432\"\n}"
+						}
+					]
+				},
+				{
+					"name": "events by user id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Beare {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url_bff_service}}/api/events/users/:id",
+							"host": [
+								"{{url_bff_service}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "d10f0fe2-d2ce-4c49-86f1-f0221b76f432"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
