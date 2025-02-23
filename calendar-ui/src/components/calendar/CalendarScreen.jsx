@@ -1,35 +1,26 @@
 
-import { useState } from 'react'
+import {useState} from 'react'
+import {useDispatch, useSelector} from "react-redux";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
-import './calendar.css'
 import {Sidebar} from "./Sidebar.jsx";
 import {RenderEventContent} from "./RenderEventContent.jsx";
 
-let eventGuid = 0
-let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
+import './calendar.css'
 
-export const INITIAL_EVENTS = [
-  {
-    id: createEventId(),
-    title: 'All-day event',
-    start: todayStr
-  },
-  {
-    id: createEventId(),
-    title: 'Timed event',
-    start: todayStr + 'T12:00:00'
-  }
-]
+let eventGuid = 0
 
 export function createEventId() {
   return String(eventGuid++)
 }
 
 export const CalendarScreen = () => {
+  const { events } = useSelector(state => state.calendar)
+  const dispatch = useDispatch()
+
   const [weekendsVisible, setWeekendsVisible] = useState(true)
   const [currentEvents, setCurrentEvents] = useState([])
 
@@ -85,16 +76,11 @@ export const CalendarScreen = () => {
           selectMirror={true}
           dayMaxEvents={true}
           weekends={weekendsVisible}
-          initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+          initialEvents={events} // alternatively, use the `events` setting to fetch from a feed
           select={handleDateSelect}
           eventContent={RenderEventContent} // custom render function
           eventClick={handleEventClick}
           eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-          /* you can update a remote database when these fire:
-          eventAdd={function(){}}
-          eventChange={function(){}}
-          eventRemove={function(){}}
-          */
         />
       </div>
     </div>

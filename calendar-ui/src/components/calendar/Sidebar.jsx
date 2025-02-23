@@ -5,11 +5,11 @@ export const Sidebar = ({ weekendsVisible, handleWeekendsToggle, currentEvents }
   return (
     <div className='demo-app-sidebar'>
       <div className='demo-app-sidebar-section'>
-        <h2>Instructions</h2>
+        <h2>Instrucciones</h2>
         <ul>
-          <li>Select dates and you will be prompted to create a new event</li>
-          <li>Drag, drop, and resize events</li>
-          <li>Click an event to delete it</li>
+          <li>Seleccione las fechas y se le pedirá que cree un nuevo evento.</li>
+          <li>Arrastrar y soltar los eventos</li>
+          <li>Haga clic en un evento para eliminarlo</li>
         </ul>
       </div>
       <div className='demo-app-sidebar-section'>
@@ -19,11 +19,11 @@ export const Sidebar = ({ weekendsVisible, handleWeekendsToggle, currentEvents }
             checked={weekendsVisible}
             onChange={handleWeekendsToggle}
           ></input>
-          toggle weekends
+          alternar fines de semana
         </label>
       </div>
       <div className='demo-app-sidebar-section'>
-        <h2>All Events ({currentEvents.length})</h2>
+        <h2>Todos los eventos ({currentEvents.length})</h2>
         <ul>
           {currentEvents.map((event) => (
             <SidebarEvent key={event.id} event={event} />
