@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  auth-service:
+    image: auth-service:latest
+    build:
+      context: ./auth-service
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_CONNECTION=redis://redis:6379
+      - JWT_SECRET=secret
+      - JWT_EXPIRES_IN=24h
+      - MYSQL_DATABASE=calendar
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - PORT=8081
+    command: ["npm", "start"]
+    depends_on:
+      - mysql
+      - redis
+
+  calendar-bff-service:
+    image: calendar-bff-service:latest
+    build:
+      context: ./calendar-bff-service
+    ports:
+      - "8082:8082"
+    environment:
+      - AUTH_SERVICE_BASE_URL=http://auth-service:8081
+      - EVENT_SERVICE_BASE_URL=http://calendar-service:8083
+      - PORT=8082
+    command: ["npm", "start"]
+    depends_on:
+      - auth-service
+
+  calendar-service:
+    image: calendar-service:latest
+    build:
+      context: ./calendar-service
+    ports:
+      - "8083:8083"
+    environment:
+      - MYSQL_DATABASE=calendar
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - PORT=8083
+    command: ["npm", "start"]
+    depends_on:
+      - mysql
+
+  calendar-ui:
+    image: calendar-ui:latest
+    build:
+      context: ./calendar-ui
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://calendar-bff-service:8083
+    depends_on:
+      - auth-service
+      - calendar-bff-service
+      - calendar-service
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: calendar
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"

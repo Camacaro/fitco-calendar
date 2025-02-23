@@ -13,7 +13,7 @@ export const createApp = async () => {
     await sequelize.authenticate()
     console.log('connection has been established successfully')
   } catch (e) {
-    console.error('error of connection')
+    console.error('error of connection', e)
     process.exit(1)
   }
 
