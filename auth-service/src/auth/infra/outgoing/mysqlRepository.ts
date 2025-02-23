@@ -1,5 +1,5 @@
 
-import mysql from "mysql2"
+import mysql, {QueryResult} from "mysql2"
 
 import {UserRepositoryI} from "../../application/auth.interface";
 import {User} from "../../domain/user";
@@ -28,16 +28,21 @@ export class MySQLRepository implements UserRepositoryI {
         });
     }
 
-    GetById(user: User): Promise<User> {
+    GetByEmail(email: string): Promise<User> {
         return new Promise((resolve, reject) => {
             let sql = "SELECT * FROM ?? WHERE ?? = ?";
-            const inserts = ['users', 'id', user.Uuid];
+            const inserts = ['users', 'email', email];
             sql = mysql.format(sql, inserts);
 
-            this.connection.query(sql, (error, results) => {
+            // TODO: create type for response of db in results
+            this.connection.query(sql, (error, results: any) => {
                 if (error) return reject(error)
-                console.log('GetById', results)
-                resolve(user)
+                if (results.length === 0) {
+                    throw new Error("not found")
+                }
+                const userFound = results[0]
+                const user = new User(userFound.uuid, userFound.username, userFound.email, '')
+                return resolve(user)
             })
         })
     }

@@ -47,12 +47,24 @@ export class AuthHandler {
 
     public async login(req: Request, res: Response) {
         // TODO: validate body
-        const loginDto = new Login(req.body.username, req.body.password);
+        const loginDto = new Login(req.body.email, req.body.password);
         try {
-            const response = await this.authApplication.login(loginDto)
-            // TODO: payload token should be object user
-            const token = await this.generateToken({email: response.Email});
-            res.status(200).json({token, response});
+            const user = await this.authApplication.login(loginDto)
+            const payload = {
+                email: user.Email,
+                username: user.Username
+            }
+            const token = await this.generateToken(payload);
+            const response: authHandlerResponseI = {
+                token,
+                user: {
+                    uuid: user.Uuid,
+                    username: user.Username,
+                    email: user.Email
+                },
+                ok: true
+            }
+            res.status(200).json(response);
         } catch (e) {
             res.status(500).json({message: 'Internal server error'});
         }

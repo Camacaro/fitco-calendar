@@ -10,7 +10,8 @@ export class AuthApplication implements AuthApplicationI {
     ) {}
 
     async login(loginDto: Login): Promise<User> {
-        return new User('uuid', 'email', 'password', '');
+        const user = await this.userRepository.GetByEmail(loginDto.Username)
+        return user
     }
 
     async register(user: User): Promise<User> {

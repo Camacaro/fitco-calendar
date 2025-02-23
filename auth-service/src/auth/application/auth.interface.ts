@@ -15,5 +15,5 @@ export interface AuthRepositoryI {
 
 export interface UserRepositoryI {
     Insert(user: User): Promise<User>
-    GetById(user: User): Promise<User>
+    GetByEmail(email: string): Promise<User>
 }
