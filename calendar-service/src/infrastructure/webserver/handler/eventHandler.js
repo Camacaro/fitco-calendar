@@ -1,7 +1,7 @@
 import {v4 as uuidv4} from "uuid";
 
 import {Event} from "../../../domain/models/event.js";
-
+// TODO: standardize response to snake case
 export const eventHandler = (eventApplication) => ({
   async createEvent(req, res) {
     try {
@@ -16,6 +16,7 @@ export const eventHandler = (eventApplication) => ({
   async listEvents(req, res) {
     try {
       const events = await eventApplication.listEvents();
+
       res.json(events);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -36,7 +37,8 @@ export const eventHandler = (eventApplication) => ({
   async updateEvent(req, res) {
     try {
       // TODO: Validate request body
-      const event = await eventApplication.updateEvent(req.params.id, req.body);
+      const eventDTO = new Event('', req.body.title, req.body.notes, req.body.start_date, req.body.end_date, '')
+      const event = await eventApplication.updateEvent(req.params.id, eventDTO);
       res.json(event);
     } catch (error) {
       res.status(500).json({ error: error.message });

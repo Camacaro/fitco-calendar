@@ -25,7 +25,7 @@ export class EventApp extends EventApplication {
     if (!event) {
       throw new Error('Event not found');
     }
-    const e = new Event(event.uuid, data.title, data.notes, new Date(data.startDate), new Date(data.endDate))
+    const e = new Event(event.uuid, data.title, data.notes, new Date(data.startDate), new Date(data.endDate), event.userId)
     await this.eventRepository.update(e);
     return Promise.resolve(e)
   }
