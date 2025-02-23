@@ -1,12 +1,13 @@
 import {Login} from "../domain/user";
+import {User} from "../domain/login";
 
-export interface AuthApplication {
-    login(login: Login): Promise<any>
+export interface AuthApplicationI {
+    login(login: Login): Promise<User>
     authenticate(uuid: string): Promise<any>
     refreshToken(uuid: string): Promise<any>
 }
 
-export interface AuthRepository {
+export interface AuthRepositoryI {
     setKey(key: string, value: string): Promise<any>
     getKey(key: string): Promise<any>
 }
