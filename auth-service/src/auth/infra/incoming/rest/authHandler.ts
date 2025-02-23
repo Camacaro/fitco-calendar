@@ -1,10 +1,12 @@
 import {Request, Response, NextFunction} from "express";
 import jwt from "jsonwebtoken"
+import { v4 as uuidv4 } from 'uuid';
 
 import {AuthApplicationI} from "../../../application/auth.interface";
 import {ConfigI} from "../../../../config";
-import {PayloadFromTokenI} from "./authHandler.interface";
-import {Login} from "../../../domain/user";
+import {authHandlerResponseI, PayloadFromTokenI} from "./authHandler.interface";
+import {Login} from "../../../domain/login";
+import {User} from "../../../domain/user";
 
 export class AuthHandler {
     constructor(
@@ -13,9 +15,9 @@ export class AuthHandler {
     ) {
     }
 
-    private async generateToken(payload: string): Promise<string> {
+    private async generateToken(payload: object): Promise<string> {
         try {
-            const token = jwt.sign({payload}, this.config.jwt.secret, {expiresIn: this.config.jwt.expiresIn});
+            const token = jwt.sign({...payload}, this.config.jwt.secret, {expiresIn: this.config.jwt.expiresIn});
             return Promise.resolve(token);
         } catch (e) {
             return Promise.reject(e);
@@ -49,7 +51,29 @@ export class AuthHandler {
         try {
             const response = await this.authApplication.login(loginDto)
             // TODO: payload token should be object user
-            const token = await this.generateToken(response.Email);
+            const token = await this.generateToken({email: response.Email});
+            res.status(200).json({token, response});
+        } catch (e) {
+            res.status(500).json({message: 'Internal server error'});
+        }
+    }
+
+    public async register(req: Request, res: Response) {
+        // TODO: validate body
+        const uuid = uuidv4()
+        const loginDto = new User(uuid, req.body.username, req.body.email, req.body.password);
+        try {
+            const user = await this.authApplication.register(loginDto)
+            const payload = {
+                email: user.Email,
+                username: user.Username
+            }
+            const token = await this.generateToken(payload);
+            const response: authHandlerResponseI = {
+                token,
+                user,
+                ok: true
+            }
             res.status(200).json({token, response});
         } catch (e) {
             res.status(500).json({message: 'Internal server error'});

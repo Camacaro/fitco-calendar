@@ -1,6 +1,6 @@
 import {AuthApplicationI, AuthRepositoryI} from "./auth.interface";
-import {Login} from "../domain/user";
-import {User} from "../domain/login";
+import {Login} from "../domain/login";
+import {User} from "../domain/user";
 
 export class AuthApplication implements AuthApplicationI {
     constructor(
@@ -8,7 +8,11 @@ export class AuthApplication implements AuthApplicationI {
     ) {}
 
     async login(loginDto: Login): Promise<User> {
-        return new User('uuid', 'email', 'password');
+        return new User('uuid', 'email', 'password', '');
+    }
+
+    async register(user: User): Promise<User> {
+
     }
 
     async authenticate(uuid: string): Promise<any> {

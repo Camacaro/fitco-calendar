@@ -13,6 +13,12 @@ export interface ConfigI {
     redis: {
         connection: string;
     };
+    mysql: {
+        host: string,
+        user: string,
+        password: string,
+        database: string
+    }
 }
 
 export const config: ConfigI = {
@@ -26,4 +32,10 @@ export const config: ConfigI = {
     redis: {
         connection: process.env.REDIS_CONNECTION as string,
     },
+    mysql: {
+        host: process.env.MYSQL_HOST as string,
+        user: process.env.MYSQL_USER as string,
+        password: process.env.MYSQL_PASSWORD as string,
+        database: process.env.MYSQL_DATABASE as string,
+    }
 }
