@@ -24,6 +24,15 @@ class AuthService {
     });
     return response.data;
   }
+
+  async verifyToken(token) {
+    const response = await this.httpClient.get('/api/auth/verify', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response.data;
+  }
 }
 
 export default AuthService;
