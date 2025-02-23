@@ -7,11 +7,11 @@ function routes(app, authService, eventService) {
   const router = express.Router();
 
   // Rutas de autenticación
-  router.post('/login', authController.login(authService));
+  router.post('/login', authController(authService).login);
 
   // Rutas de eventos
-  router.get('/events', eventController.listEvents(eventService));
-  router.post('/events', eventController.createEvent(eventService));
+  router.get('/events', eventController(eventService).listEvents);
+  router.post('/events', eventController(eventService).createEvent);
 
   app.use('/api', router);
 }
