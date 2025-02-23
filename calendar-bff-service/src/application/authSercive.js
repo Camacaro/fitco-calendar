@@ -1,3 +1,5 @@
+
+// TODO: apply handle errors
 class AuthService {
 
   constructor(httpClient) {
@@ -6,6 +8,20 @@ class AuthService {
 
   async login(email, password) {
     const response = await this.httpClient.post('/api/auth/login', { email, password });
+    return response.data;
+  }
+
+  async register(email, username, password) {
+    const response = await this.httpClient.post('/api/auth/register', { email, username, password });
+    return response.data;
+  }
+
+  async refreshToken(token) {
+    const response = await this.httpClient.get('/api/auth/refresh', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
     return response.data;
   }
 }

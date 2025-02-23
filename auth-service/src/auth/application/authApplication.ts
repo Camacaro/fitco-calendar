@@ -30,10 +30,15 @@ export class AuthApplication implements AuthApplicationI {
     async authenticate(uuid: string): Promise<User> {
         const payloadStr = await this.authRepository.getKey(uuid)
         // TODO: standardize the payload to expect
-        const payload = JSON.parse(payloadStr)
-
-        if (payload.uuid) {
-            return new User(payload.uuid, payload.username, payload.email, '')
+        if (payloadStr) {
+            try {
+                const payload = JSON.parse(payloadStr)
+                if (payload.uuid) {
+                    return new User(payload.uuid, payload.username, payload.email, '')
+                }
+            } catch (e) {
+                console.error(e)
+            }
         }
 
         const user = await this.userRepository.GetById(uuid)

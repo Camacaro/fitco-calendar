@@ -8,6 +8,8 @@ function routes(app, authService, eventService) {
 
   // Rutas de autenticación
   router.post('/login', authController(authService).login);
+  router.post('/register', authController(authService).register);
+  router.get('/refresh-token', authController(authService).refreshToken);
 
   // Rutas de eventos
   router.get('/events', eventController(eventService).listEvents);
