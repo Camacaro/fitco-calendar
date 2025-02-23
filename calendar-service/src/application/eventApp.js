@@ -33,4 +33,8 @@ export class EventApp extends EventApplication {
   async deleteEvent(id) {
     return this.eventRepository.delete(id);
   }
+
+  async listEventsByUserId(userId){
+    return this.eventRepository.findAllByUserId(userId);
+  }
 }

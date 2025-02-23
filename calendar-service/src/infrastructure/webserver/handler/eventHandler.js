@@ -22,6 +22,14 @@ export const eventHandler = (eventApplication) => ({
       res.status(500).json({ error: error.message });
     }
   },
+  async listEventsByUserId(req, res) {
+    try {
+      const events = await eventApplication.listEventsByUserId(req.params.userId);
+      res.json(events);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
   async getEvent(req, res) {
     try {
       const event = await eventApplication.getEvent(req.params.id);

@@ -1,7 +1,7 @@
 
-const listEvents = async (eventService, req, res) => {
+const listEventsByUser = async (eventService, req, res) => {
   try {
-    const events = await eventService.getEvents();
+    const events = await eventService.getEventsByUserId(req.params.userId);
     res.json(events);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -17,9 +17,19 @@ const createEvent = async (eventService, req, res) =>  {
   }
 }
 
+const getEventById = async (eventService, req, res) => {
+  try {
+    const event = await eventService.getEventById(req.params.id);
+    res.json(event);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 const eventController = (eventService) => ({
-  listEvents: async (req, res) => listEvents(eventService, req, res),
+  listEventsByUser: async (req, res) => listEventsByUser(eventService, req, res),
   createEvent: async (req, res) => createEvent(eventService, req, res),
+  getEventById: async (req, res) => getEventById(eventService, req, res),
 });
 
 

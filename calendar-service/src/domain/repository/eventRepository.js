@@ -20,4 +20,8 @@ export class EventRepository {
   async delete(id) {
     throw new Error('Not implemented');
   }
+
+  async findAllByUserId(userId) {
+    throw new Error('Not implemented');
+  }
 }

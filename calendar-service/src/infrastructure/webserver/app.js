@@ -32,6 +32,7 @@ export const createApp = async () => {
   app.post('/events', eHandler.createEvent);
   app.put('/events/:id', eHandler.updateEvent);
   app.delete('/events/:id', eHandler.deleteEvent);
+  app.get('/events/users/:userId', eHandler.listEventsByUserId);
 
   app.use(sHandler.notFound)
   app.use(sHandler.err)

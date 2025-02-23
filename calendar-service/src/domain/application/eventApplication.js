@@ -12,6 +12,10 @@ export class EventApplication {
     throw new Error('Not implemented');
   }
 
+  async listEventsByUserId(userId){
+    throw new Error('Not implemented');
+  }
+
   async getEvent(id) {
     throw new Error('Not implemented');
   }

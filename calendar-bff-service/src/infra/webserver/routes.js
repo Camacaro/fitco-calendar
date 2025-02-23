@@ -12,7 +12,8 @@ function routes(app, authService, eventService) {
   router.get('/refresh-token', authController(authService).refreshToken);
 
   // Rutas de eventos
-  router.get('/events', eventController(eventService).listEvents);
+  router.get('/events/users/:userId', eventController(eventService).listEventsByUser);
+  router.get('/events/:id', eventController(eventService).getEventById);
   router.post('/events', eventController(eventService).createEvent);
 
   app.use('/api', router);

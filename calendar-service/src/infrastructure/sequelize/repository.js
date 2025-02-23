@@ -26,4 +26,8 @@ export class EventSequelizeRepository extends EventRepository {
   async delete(id) {
     return await Event.destroy({ where: { uuid: id } })
   }
+
+  async findAllByUserId(userId) {
+    return await Event.findAll({ where: { user_id: userId } });
+  }
 }
