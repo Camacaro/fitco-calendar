@@ -1,0 +1,40 @@
+import express from 'express'
+import cors from "cors";
+
+import {sequelize} from "../sequelize/sequelize";
+import {EventSequelizeRepository} from "../sequelize/repository";
+import {EventApp} from "../../application/eventApp";
+import {eventHandler} from "./handler/eventHandler";
+import {serverHandler} from "./handler/serverHandler";
+
+export const createApp = async () => {
+
+  try {
+    await sequelize.authenticate()
+    console.log('connection has been established successfully')
+  } catch (e) {
+    console.error('error of connection')
+    process.exit(1)
+  }
+
+  const repository = new EventSequelizeRepository();
+  const eventApplication = new EventApp(repository);
+
+  const app = express();
+  app.use( cors() );
+  app.use( express.json() );
+
+  const eHandler = eventHandler(eventApplication)
+  const sHandler = serverHandler()
+
+  app.get('/events', eHandler.listEvents);
+  app.get('/events/:id', eHandler.getEvent);
+  app.post('/events', eHandler.createEvent);
+  app.put('/events/:id', eHandler.updateEvent);
+  app.delete('/events/:id', eHandler.deleteEvent);
+
+  app.use(sHandler.notFound)
+  app.use(sHandler.err)
+
+  return app
+}
