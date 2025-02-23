@@ -14,12 +14,21 @@ const authSlice = createSlice({
       state.username = action.payload.username
       state.email = action.payload.email
       state.token = action.payload.token
+    },
+    checkingFinish: (state) => {
+      state.checking = false
+    },
+    logout: (state) => {
+      state.checking = false
+      state.username = ''
+      state.email = ''
+      state.token = ''
     }
   }
 })
 
 export const {
-  login
+  login, checkingFinish, logout
 } = authSlice.actions
 
 export const authReducer = authSlice.reducer
