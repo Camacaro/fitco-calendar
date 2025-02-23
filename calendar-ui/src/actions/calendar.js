@@ -1,5 +1,7 @@
+import Swal from "sweetalert2";
+
 import {fetchWithToken} from "../services/http.js";
-import {eventSet, loadingInitialState} from "../reducers/calendarReducer.js";
+import {eventSet, loadingInitialState, eventAddNew} from "../reducers/calendarReducer.js";
 
 const formatDate = (date) => {
   return new Date(date).toISOString().replace(/T.*$/, '')
@@ -33,6 +35,44 @@ export const eventStartLoading = (userId) => {
       console.log(e)
     } finally {
       dispatch( loadingInitialState(false) )
+    }
+  }
+}
+
+export const eventAddNewOne = (event) => {
+  return async (dispatch) => {
+    try {
+      const payload = {
+        title: event.title,
+        notes: event.notes,
+        start_date: event.startDate,
+        end_date: event.endDate,
+        user_id: event.userId,
+      }
+      const response = await fetchWithToken(`api/events`, payload, 'POST')
+      const body = await response.json();
+
+      if(!body.uuid) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Hubo un error al guardar el evento',
+          icon: 'error'
+        });
+        return
+      }
+
+      const e = formatEvent(body)
+      dispatch( eventAddNew(e) )
+
+      Swal.fire({
+        title: 'Evento',
+        text: 'El evento a sido guardado',
+        icon: 'success'
+      });
+
+      return e
+    } catch (e) {
+      console.log(e)
     }
   }
 }

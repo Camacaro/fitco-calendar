@@ -9,8 +9,7 @@ const calendarSlice = createSlice({
   },
   reducers: { // Funciones reductoras que se utilizan para actualizar el estado del slice. Estas funciones se generan automáticamente a partir de los nombres de las claves del objeto reducers.
     eventAddNew: (state, action) => {
-      console.log({state, action})
-      // state.events.push(action.payload)
+      state.events.push(action.payload)
     },
     eventSet: (state, action) => {
       state.events = action.payload

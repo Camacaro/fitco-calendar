@@ -13,10 +13,6 @@ export const CalendarScreen = () => {
     dispatch( eventStartLoading(uuid) )
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('effect', {events})
-  }, [events]);
-
   // TODO: add a loading
   return (
     <>

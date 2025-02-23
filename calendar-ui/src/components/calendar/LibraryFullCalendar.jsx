@@ -9,6 +9,8 @@ import {Sidebar} from "./Sidebar.jsx";
 import {RenderEventContent} from "./RenderEventContent.jsx";
 
 import './calendar.css'
+import {useDispatch, useSelector} from "react-redux";
+import {eventAddNewOne} from "../../actions/calendar.js";
 
 let eventGuid = 0
 
@@ -17,7 +19,8 @@ export function createEventId() {
 }
 
 export const LibraryFullCalendar = ({ initialEvents }) => {
-
+  const dispatch = useDispatch()
+  const { uuid } = useSelector(state => state.auth )
   const [weekendsVisible, setWeekendsVisible] = useState(true)
   const [currentEvents, setCurrentEvents] = useState([])
 
@@ -25,19 +28,31 @@ export const LibraryFullCalendar = ({ initialEvents }) => {
     setWeekendsVisible(!weekendsVisible)
   }
 
-  function handleDateSelect(selectInfo) {
+  async function handleDateSelect(selectInfo) {
     let title = prompt('Please enter a new title for your event')
     let calendarApi = selectInfo.view.calendar
 
     calendarApi.unselect() // clear date selection
 
     if (title) {
+      const eventToSend = {
+        title: title,
+        notes: "mi nota personal", // TODO: change this
+        startDate: new Date(selectInfo.startStr),
+        endDate: new Date(selectInfo.endStr),
+        userId: uuid
+      }
+
+      const eventSaved = await dispatch( eventAddNewOne(eventToSend) )
+      if (!eventSaved.id) return
+
       calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
+        id: eventSaved.id,
+        title: eventSaved.title,
+        start: eventSaved.start,
         end: selectInfo.endStr,
-        allDay: selectInfo.allDay
+        allDay: selectInfo.allDay,
+        notes: "",
       })
     }
   }
@@ -52,9 +67,21 @@ export const LibraryFullCalendar = ({ initialEvents }) => {
     setCurrentEvents(events)
   }
 
-  const handleEventAdd = (e) => {
+  const handleEventAdd = async (e) => {
+    const event = {
+      title: e.event.title,
+      notes: e.event.extendedProps.notes,
+      startDate: new Date(e.event.start),
+      endDate: new Date(e.event.end),
+      userId: uuid
+    }
+
+    // const my = await dispatch( eventAddNewOne(event) )
+    // console.log({my})
+
     console.log('handleEventAdd', e)
   }
+
   const handleEventChange = (e) => {
     console.log('handleEventChange', e)
   }
