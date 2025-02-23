@@ -5,7 +5,7 @@ import {ProtectedRoute} from "./ProtectedRoute.jsx";
 import {PublicRoute} from "./PublicRoute.jsx";
 
 export const AppRouter = () => {
-  const token = "asads"
+  const token = ""
 
   return (
     <Router>
