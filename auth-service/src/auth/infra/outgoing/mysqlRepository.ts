@@ -1,5 +1,5 @@
 
-import mysql, {ConnectionConfig} from "mysql"
+import mysql from "mysql2"
 
 import {UserRepositoryI} from "../../application/auth.interface";
 import {User} from "../../domain/user";
@@ -24,7 +24,7 @@ export class MySQLRepository implements UserRepositoryI {
         this.connection.connect();
         this.connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
             if (error) throw error;
-            console.log('The solution is: ', results[0].solution);
+            console.log('Connected to Mysql');
         });
     }
 
@@ -36,8 +36,8 @@ export class MySQLRepository implements UserRepositoryI {
 
             this.connection.query(sql, (error, results) => {
                 if (error) return reject(error)
-
-                resolve(results)
+                console.log('GetById', results)
+                resolve(user)
             })
         })
     }
@@ -48,8 +48,8 @@ export class MySQLRepository implements UserRepositoryI {
             const values = [user.Uuid, user.Username, user.Email, user.Password]
             this.connection.query(query, values, (error, results) => {
                 if (error) return reject(error)
-
-                resolve(results)
+                console.log('insert', results)
+                resolve(user)
             })
         })
     }

@@ -71,10 +71,14 @@ export class AuthHandler {
             const token = await this.generateToken(payload);
             const response: authHandlerResponseI = {
                 token,
-                user,
+                user: {
+                    uuid: user.Uuid,
+                    username: user.Username,
+                    email: user.Email
+                },
                 ok: true
             }
-            res.status(200).json({token, response});
+            res.status(200).json(response);
         } catch (e) {
             res.status(500).json({message: 'Internal server error'});
         }
