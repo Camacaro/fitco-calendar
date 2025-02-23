@@ -19,7 +19,7 @@ export const Sidebar = ({ weekendsVisible, handleWeekendsToggle, currentEvents }
             checked={weekendsVisible}
             onChange={handleWeekendsToggle}
           ></input>
-          alternar fines de semana
+          &nbsp;Alternar fines de semana
         </label>
       </div>
       <div className='demo-app-sidebar-section'>

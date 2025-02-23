@@ -26,7 +26,7 @@ const fetchWithToken = ( endpoint, data, method = 'GET' ) => {
     return fetch( url, {
       method,
       headers: {
-        'x-token': token
+        'Authorization': `Beare ${token}`
       }
     });
   } else {

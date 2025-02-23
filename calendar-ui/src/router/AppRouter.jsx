@@ -1,18 +1,25 @@
 import {useEffect} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router";
 
 import {CalendarScreen} from "../components/calendar/CalendarScreen.jsx";
 import {LoginScreen} from "../components/auth/LoginScreen.jsx";
 import {ProtectedRoute} from "./ProtectedRoute.jsx";
 import {PublicRoute} from "./PublicRoute.jsx";
+import {startChecking} from "../actions/auth.js";
 
 export const AppRouter = () => {
+  const dispatch = useDispatch()
   const auth = useSelector(state => state.auth )
 
   useEffect(() => {
+    dispatch(startChecking())
     console.log({auth})
-  }, [auth]);
+  }, [dispatch]);
+
+  if (auth.checking) {
+    return (<h5>Espere</h5>)
+  }
 
   return (
     <Router>

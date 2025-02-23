@@ -15,18 +15,18 @@ const erroConnection = () => {
 export const startLogin = ( email, password ) => {
   return async( dispatch ) => {
 
-    const resp = await fetchWithoutToken( 'auth', { email, password }, 'POST' );
+    const resp = await fetchWithoutToken( 'api/login', { email, password }, 'POST' );
     const body = await resp.json();
 
     if (!body.ok) return erroConnection()
 
-    localStorage.setItem('token', "body.token" );
+    localStorage.setItem('token', body.token);
     localStorage.setItem('token-init-date', new Date().getTime() );
     dispatch( login({
-      uid: '123',
-      username: 'jcamcacaro',
-      email: 'jesus@gmail.com',
-      token: 'token'
+      uid: body.user.uuid,
+      username: body.user.username,
+      email: body.user.email,
+      token: body.token
     }) )
   }
 }
@@ -34,7 +34,7 @@ export const startLogin = ( email, password ) => {
 export const startRegister = ( email, password, name ) => {
   return async( dispatch ) => {
 
-    const resp = await fetchWithoutToken( 'auth/new', { email, password, name }, 'POST' );
+    const resp = await fetchWithoutToken( 'api/register', { email, password, username: name }, 'POST' );
     const body = await resp.json();
 
     if (!body.ok) return erroConnection()
@@ -43,10 +43,10 @@ export const startRegister = ( email, password, name ) => {
     localStorage.setItem('token-init-date', new Date().getTime() );
 
     dispatch( login({
-      uid: '123',
-      username: 'jcamcacaro',
-      email: 'jesus@gmail.com',
-      token: 'token'
+      uid: body.user.uuid,
+      username: body.user.username,
+      email: body.user.email,
+      token: body.token
     }) )
 
   }
@@ -54,21 +54,25 @@ export const startRegister = ( email, password, name ) => {
 
 export const startChecking = () => {
   return async(dispatch) => {
+    try {
+      const resp = await fetchWithToken('api/refresh-token', null );
+      const body = await resp.json();
 
-    const resp = await fetchWithToken('auth/renew', null );
-    const body = await resp.json();
+      if (!body.ok) return dispatch( checkingFinish() );
 
-    if (!body.ok) return dispatch( checkingFinish() );
+      localStorage.setItem('token', body.token );
+      localStorage.setItem('token-init-date', new Date().getTime() );
 
-    localStorage.setItem('token', body.token );
-    localStorage.setItem('token-init-date', new Date().getTime() );
+      dispatch( login({
+        uid: body.user.uuid,
+        username: body.user.username,
+        email: body.user.email,
+        token: body.token
+      }) )
+    } catch (e) {
+      dispatch( checkingFinish() )
+    }
 
-    dispatch( login({
-      uid: '123',
-      username: 'jcamcacaro',
-      email: 'jesus@gmail.com',
-      token: 'token'
-    }) )
   }
 }
 

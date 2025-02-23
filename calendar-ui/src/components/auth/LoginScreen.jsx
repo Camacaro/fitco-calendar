@@ -29,6 +29,7 @@ export const LoginScreen = () => {
   }
   const handleRegister = ( e ) => {
     e.preventDefault();
+    // TODO: handler email valid
     if ( rPassword1 !== rPassword2 ) {
       return Swal.fire('Error', 'Las contraseñas deben de ser iguales','error');
     }
