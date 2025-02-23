@@ -1,16 +1,22 @@
 
-import mysql from "mysql"
+import mysql, {ConnectionConfig} from "mysql"
 
 import {UserRepositoryI} from "../../application/auth.interface";
 import {User} from "../../domain/user";
-import {ConfigI} from "../../../config";
+import {MysqlConfigI} from "../../../config";
 
 
 export class MySQLRepository implements UserRepositoryI {
     private connection: mysql.Connection;
 
-    constructor(private readonly config: ConfigI) {
-        this.connection = mysql.createConnection({...config.mysql})
+    constructor(private readonly config: MysqlConfigI) {
+        this.connection = mysql.createConnection({
+            user: config.user,
+            host: config.host,
+            database: config.database,
+            port: Number(config.port),
+            password: config.password
+        })
         this.initConnection()
     }
 

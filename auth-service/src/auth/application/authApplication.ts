@@ -1,10 +1,12 @@
-import {AuthApplicationI, AuthRepositoryI} from "./auth.interface";
+import bcrypt from 'bcryptjs'
+import {AuthApplicationI, AuthRepositoryI, UserRepositoryI} from "./auth.interface";
 import {Login} from "../domain/login";
 import {User} from "../domain/user";
 
 export class AuthApplication implements AuthApplicationI {
     constructor(
         private readonly authRepository: AuthRepositoryI,
+        private readonly userRepository: UserRepositoryI,
     ) {}
 
     async login(loginDto: Login): Promise<User> {
@@ -12,7 +14,9 @@ export class AuthApplication implements AuthApplicationI {
     }
 
     async register(user: User): Promise<User> {
-
+        const salt = bcrypt.genSaltSync();
+        user.Password = bcrypt.hashSync( user.Password, salt );
+        return this.userRepository.Insert(user)
     }
 
     async authenticate(uuid: string): Promise<any> {

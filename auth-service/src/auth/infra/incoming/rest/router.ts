@@ -7,7 +7,7 @@ export class AuthRouter {
 
     constructor(private readonly authHandler: AuthHandler) {
         this.router.post('/login', this.authHandler.login.bind(this.authHandler));
-        this.router.post('/login', this.authHandler.register.bind(this.authHandler));
+        this.router.post('/register', this.authHandler.register.bind(this.authHandler));
         this.router.post('/verify', this.authHandler.verifyToken.bind(this.authHandler), this.authHandler.authenticate.bind(this.authHandler));
         this.router.post('/refresh', this.authHandler.verifyToken.bind(this.authHandler), this.authHandler.refreshToken.bind(this.authHandler));
     }

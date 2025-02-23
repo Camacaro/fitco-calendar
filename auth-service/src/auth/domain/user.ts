@@ -5,7 +5,7 @@ export class User {
         private readonly uuid: string,
         private readonly username: string,
         private readonly email: string,
-        private readonly password: string,
+        private password: string,
     ) {}
 
     get Uuid(): string {
@@ -22,5 +22,9 @@ export class User {
 
     get Password(): string {
         return this.password;
+    }
+
+    set Password(value: string) {
+        this.password = value
     }
 }
