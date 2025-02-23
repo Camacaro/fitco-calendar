@@ -1,7 +1,11 @@
+import {useDispatch} from "react-redux";
+
+import {startLogin} from "../../actions/auth.js";
 import {useForm} from "../../hooks/useForm.js";
 import './login.css'
 
 export const LoginScreen = () => {
+  const dispatch = useDispatch()
 
   const [ formLoginValues, handleLoginInputChange ] = useForm({
     lEmail: '',
@@ -20,8 +24,8 @@ export const LoginScreen = () => {
 
   const handleLogin = ( e ) => {
     e.preventDefault();
+    dispatch( startLogin( lEmail, lPassword ) );
   }
-
   const handleRegister = ( e ) => {
     e.preventDefault();
   }
