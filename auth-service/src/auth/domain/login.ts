@@ -1,20 +1,12 @@
-
-export class User {
-    constructor(
-        private readonly uuid: string,
-        private readonly email: string,
-        private readonly password: string,
-    ) {}
-
-    get Uuid(): string {
-        return this.uuid;
+export class Login {
+    constructor(private readonly username: string, private readonly password: string) {
     }
 
-    get Email(): string {
-        return this.email;
+    get Username() {
+        return this.username
     }
 
-    get Password(): string {
-        return this.password;
+    get Password() {
+        return this.password
     }
 }
