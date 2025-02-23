@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-export interface Config {
+export interface ConfigI {
     server: {
         port: string;
     };
