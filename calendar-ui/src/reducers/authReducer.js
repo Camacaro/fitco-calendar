@@ -7,6 +7,7 @@ const authSlice = createSlice({
     username: '',
     email: '',
     token: '',
+    uuid: '',
   },
   reducers: {
     login: (state, action) => { // action.type = auth/login
@@ -14,6 +15,7 @@ const authSlice = createSlice({
       state.username = action.payload.username
       state.email = action.payload.email
       state.token = action.payload.token
+      state.uuid = action.payload.uuid
     },
     checkingFinish: (state) => {
       state.checking = false
@@ -23,6 +25,7 @@ const authSlice = createSlice({
       state.username = ''
       state.email = ''
       state.token = ''
+      state.uuid = ''
     }
   }
 })

@@ -1,6 +1,5 @@
 
 import {useState} from 'react'
-import {useDispatch, useSelector} from "react-redux";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -17,9 +16,7 @@ export function createEventId() {
   return String(eventGuid++)
 }
 
-export const LibraryFullCalendar = () => {
-  const { events } = useSelector(state => state.calendar)
-  const dispatch = useDispatch()
+export const LibraryFullCalendar = ({ initialEvents }) => {
 
   const [weekendsVisible, setWeekendsVisible] = useState(true)
   const [currentEvents, setCurrentEvents] = useState([])
@@ -55,6 +52,17 @@ export const LibraryFullCalendar = () => {
     setCurrentEvents(events)
   }
 
+  const handleEventAdd = (e) => {
+    console.log('handleEventAdd', e)
+  }
+  const handleEventChange = (e) => {
+    console.log('handleEventChange', e)
+  }
+
+  const handleEventRemove= (e) => {
+    console.log('handleEventRemove', e)
+  }
+
   return (
     <div className='demo-app'>
       <Sidebar
@@ -76,11 +84,14 @@ export const LibraryFullCalendar = () => {
           selectMirror={true}
           dayMaxEvents={true}
           weekends={weekendsVisible}
-          initialEvents={events} // alternatively, use the `events` setting to fetch from a feed
+          initialEvents={initialEvents} // alternatively, use the `events` setting to fetch from a feed
           select={handleDateSelect}
           eventContent={RenderEventContent} // custom render function
           eventClick={handleEventClick}
           eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+          eventAdd={handleEventAdd}
+          eventChange={handleEventChange}
+          eventRemove={handleEventRemove}
         />
       </div>
     </div>

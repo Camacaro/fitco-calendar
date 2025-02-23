@@ -23,7 +23,7 @@ export const startLogin = ( email, password ) => {
     localStorage.setItem('token', body.token);
     localStorage.setItem('token-init-date', new Date().getTime() );
     dispatch( login({
-      uid: body.user.uuid,
+      uuid: body.user.uuid,
       username: body.user.username,
       email: body.user.email,
       token: body.token
@@ -43,7 +43,7 @@ export const startRegister = ( email, password, name ) => {
     localStorage.setItem('token-init-date', new Date().getTime() );
 
     dispatch( login({
-      uid: body.user.uuid,
+      uuid: body.user.uuid,
       username: body.user.username,
       email: body.user.email,
       token: body.token
@@ -64,7 +64,7 @@ export const startChecking = () => {
       localStorage.setItem('token-init-date', new Date().getTime() );
 
       dispatch( login({
-        uid: body.user.uuid,
+        uuid: body.user.uuid,
         username: body.user.username,
         email: body.user.email,
         token: body.token
