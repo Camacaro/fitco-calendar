@@ -119,7 +119,21 @@ export class AuthHandler {
     public async refreshToken(req: Request, res: Response) {
         try {
             const uuid = req.body.payload;
-            const response = await this.authApplication.refreshToken(uuid);
+            const user = await this.authApplication.authenticate(uuid);
+            const payload: PayloadFromTokenI = {
+                uuid: user.Uuid,
+            }
+            const token = await this.generateToken(payload);
+            const response: authHandlerResponseI = {
+                token: token,
+                user: {
+                    uuid: user.Uuid,
+                    username: user.Username,
+                    email: user.Email
+                },
+                ok: true
+            }
+
             res.status(200).json(response);
         } catch (e) {
             res.status(500).json({message: 'Internal server error'});
