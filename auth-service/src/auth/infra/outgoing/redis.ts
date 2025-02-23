@@ -20,7 +20,7 @@ export class RedisConnection implements AuthRepositoryI {
     }
 
     // Promise<null|Error>
-    async setKey(key: string, value: string): Promise<any> {
+    async setKey(key: string, value: string): Promise<null|Error> {
         return new Promise( async (resolve, reject) => {
             try {
                 await this.redisClient.set(key, value, {
@@ -34,7 +34,7 @@ export class RedisConnection implements AuthRepositoryI {
     }
 
     // Promise<string | Error>
-    async getKey(key: string): Promise<any> {
+    async getKey(key: string): Promise<string> {
         return new Promise( async (resolve, reject) => {
             try {
                 const value = await this.redisClient.get(key);

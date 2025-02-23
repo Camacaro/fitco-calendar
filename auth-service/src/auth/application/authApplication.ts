@@ -11,6 +11,13 @@ export class AuthApplication implements AuthApplicationI {
 
     async login(loginDto: Login): Promise<User> {
         const user = await this.userRepository.GetByEmail(loginDto.Username)
+        const payload = {
+            uuid: user.Uuid,
+            username: user.Username,
+            email: user.Email,
+        }
+        const payloadStr = JSON.stringify(payload)
+        await this.authRepository.setKey(user.Uuid, payloadStr)
         return user
     }
 
@@ -20,8 +27,24 @@ export class AuthApplication implements AuthApplicationI {
         return this.userRepository.Insert(user)
     }
 
-    async authenticate(uuid: string): Promise<any> {
-        throw new Error("need implementation")
+    async authenticate(uuid: string): Promise<User> {
+        const payloadStr = await this.authRepository.getKey(uuid)
+        // TODO: standardize the payload to expect
+        const payload = JSON.parse(payloadStr)
+
+        if (payload.uuid) {
+            return new User(payload.uuid, payload.username, payload.email, '')
+        }
+
+        const user = await this.userRepository.GetById(uuid)
+        const payloadToSave = {
+            uuid: user.Uuid,
+            username: user.Username,
+            email: user.Email,
+        }
+        const payloadStrToSave = JSON.stringify(payloadToSave)
+        await this.authRepository.setKey(user.Uuid, payloadStrToSave)
+        return user
     }
 
     async refreshToken(uuid: string): Promise<any> {

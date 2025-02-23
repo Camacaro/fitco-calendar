@@ -59,6 +59,25 @@ export class MySQLRepository implements UserRepositoryI {
         })
     }
 
+    GetById(id: string): Promise<User> {
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT * FROM ?? WHERE ?? = ?";
+            const inserts = ['users', 'uuid', id];
+            sql = mysql.format(sql, inserts);
+
+            // TODO: create type for response of db in results
+            this.connection.query(sql, (error, results: any) => {
+                if (error) return reject(error)
+                if (results.length === 0) {
+                    throw new Error("not found")
+                }
+                const userFound = results[0]
+                const user = new User(userFound.uuid, userFound.username, userFound.email, '')
+                return resolve(user)
+            })
+        })
+    }
+
     closeConnection(): void {
         this.connection.end()
     }

@@ -15,7 +15,7 @@ export class AuthHandler {
     ) {
     }
 
-    private async generateToken(payload: object): Promise<string> {
+    private async generateToken(payload: PayloadFromTokenI): Promise<string> {
         try {
             const token = jwt.sign({...payload}, this.config.jwt.secret, {expiresIn: this.config.jwt.expiresIn});
             return Promise.resolve(token);
@@ -50,9 +50,8 @@ export class AuthHandler {
         const loginDto = new Login(req.body.email, req.body.password);
         try {
             const user = await this.authApplication.login(loginDto)
-            const payload = {
-                email: user.Email,
-                username: user.Username
+            const payload: PayloadFromTokenI = {
+                uuid: user.Uuid,
             }
             const token = await this.generateToken(payload);
             const response: authHandlerResponseI = {
@@ -76,9 +75,8 @@ export class AuthHandler {
         const loginDto = new User(uuid, req.body.username, req.body.email, req.body.password);
         try {
             const user = await this.authApplication.register(loginDto)
-            const payload = {
-                email: user.Email,
-                username: user.Username
+            const payload: PayloadFromTokenI = {
+                uuid: user.Uuid,
             }
             const token = await this.generateToken(payload);
             const response: authHandlerResponseI = {
@@ -99,7 +97,19 @@ export class AuthHandler {
     public async authenticate(req: Request, res: Response) {
         try {
             const uuid = req.body.payload;
-            const response = await this.authApplication.authenticate(uuid);
+            const user = await this.authApplication.authenticate(uuid);
+            const token = req.header('Authorization')?.split(' ')[1];
+
+            const response: authHandlerResponseI = {
+                token: token!,
+                user: {
+                    uuid: user.Uuid,
+                    username: user.Username,
+                    email: user.Email
+                },
+                ok: true
+            }
+
             res.status(200).json(response);
         } catch (e) {
             res.status(500).json({message: 'Internal server error'});
