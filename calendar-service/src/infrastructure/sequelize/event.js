@@ -28,6 +28,11 @@ export const Event = sequelize.define('Event', {
     allowNull: false,
     field: 'end_date',
   },
+  userId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    field: 'user_id',
+  }
 }, {
   tableName: 'events',
   timestamps: false,

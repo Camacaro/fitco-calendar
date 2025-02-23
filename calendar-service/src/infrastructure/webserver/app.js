@@ -1,11 +1,11 @@
 import express from 'express'
 import cors from "cors";
 
-import {sequelize} from "../sequelize/sequelize";
-import {EventSequelizeRepository} from "../sequelize/repository";
-import {EventApp} from "../../application/eventApp";
-import {eventHandler} from "./handler/eventHandler";
-import {serverHandler} from "./handler/serverHandler";
+import {sequelize} from "../sequelize/sequelize.js";
+import {EventSequelizeRepository} from "../sequelize/repository.js";
+import {EventApp} from "../../application/eventApp.js";
+import {eventHandler} from "./handler/eventHandler.js";
+import {serverHandler} from "./handler/serverHandler.js";
 
 export const createApp = async () => {
 

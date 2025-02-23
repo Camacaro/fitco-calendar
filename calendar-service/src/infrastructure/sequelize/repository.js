@@ -1,7 +1,7 @@
 
 
-import {EventRepository} from "../../domain/repository/eventRepository";
-import {Event} from "./event";
+import {EventRepository} from "../../domain/repository/eventRepository.js";
+import {Event} from "./event.js";
 
 // TODO: add custom repository errors
 // EventRepository actúa como una clase abstracta que define los métodos que deben implementar los repositorios concretos.

@@ -1,7 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
-
-import {EventApplication} from "../domain/application/eventApplication";
-import {Event} from "../domain/models/event";
+import {EventApplication} from "../domain/application/eventApplication.js";
+import {Event} from "../domain/models/event.js";
 
 export class EventApp extends EventApplication {
 
@@ -10,10 +8,8 @@ export class EventApp extends EventApplication {
     this.eventRepository = eventRepository
   }
 
-  async createEvent(data) {
-    const event = new Event(uuidv4(), data.title, data.notes, data.startDate, data.endDate)
+  async createEvent(event) {
     return this.eventRepository.save(event);
-
   }
 
   async listEvents() {
