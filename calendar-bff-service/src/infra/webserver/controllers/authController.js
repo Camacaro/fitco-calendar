@@ -14,4 +14,4 @@ const authController = (authService) => ({
   login: async (req, res) => login(authService, req, res)
 });
 
-export default authController()
+export default authController;
