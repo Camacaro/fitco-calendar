@@ -1,12 +1,13 @@
 import {Provider} from "react-redux";
 
 import {store} from "./store/store.js";
+import {CalendarScreen} from "./components/calendar/CalendarScreen.jsx";
 
 function App() {
 
   return (
     <Provider store={ store }>
-      <h1>Hola mundo</h1>
+      <CalendarScreen />
     </Provider>
   )
 }
