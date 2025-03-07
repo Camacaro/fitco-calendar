@@ -38,7 +38,7 @@ export class MySQLRepository implements UserRepositoryI {
             this.connection.query(sql, (error, results: any) => {
                 if (error) return reject(error)
                 if (results.length === 0) {
-                    throw new Error("not found")
+                    return reject("not found")
                 }
                 const userFound = results[0]
                 const user = new User(userFound.uuid, userFound.username, userFound.email, '')

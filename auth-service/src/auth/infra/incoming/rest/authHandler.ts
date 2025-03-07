@@ -65,7 +65,8 @@ export class AuthHandler {
             }
             res.status(200).json(response);
         } catch (e) {
-            res.status(500).json({message: 'Internal server error'});
+            console.log(e)
+            res.status(404).json({message: 'user/password incorrect'});
         }
     }
 

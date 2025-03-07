@@ -52,3 +52,10 @@ Escogí este diseño de aplicación para demostrar destreza en arquitectura, dis
 * react-dom 
 * react-redux 
 * react-router
+
+## Local 
+Run docker compone 
+```
+docker-compose up --build
+```
+**Nota**: .env file in calendar ui need to add the URL service to use  

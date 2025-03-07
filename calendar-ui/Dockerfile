@@ -1,29 +1,13 @@
-# Usar una imagen de Node.js para construir la aplicación
-FROM node:22 AS build
-
-# Establecer el directorio de trabajo
+FROM node:lts-bullseye as build
 WORKDIR /app
-
-# Copiar package.json y package-lock.json
-COPY package.json package-lock.json ./
-
-# Instalar las dependencias
-RUN npm install
-
-# Copiar el resto del código del proyecto
+COPY package*.json ./
+RUN npm ci
 COPY . .
-
-# Ejecutar el script de build
 RUN npm run build
 
-# Usar una imagen de Nginx para servir la aplicación
+### stage 2
 FROM nginx:alpine
-
-# Copiar los archivos de build al directorio que Nginx usa para los archivos estáticos
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Exponer el puerto en el que Nginx está sirviendo
-EXPOSE 3000
-
-# Comando para iniciar Nginx
-CMD ["nginx", "-g", "daemon off;"]
+ADD ./config/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist /var/www/app/
+EXPOSE 80
+CMD ["nginx","-g","daemon off;"]

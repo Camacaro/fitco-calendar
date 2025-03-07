@@ -14,7 +14,7 @@ export const createApp = async () => {
     console.log('connection has been established successfully')
   } catch (e) {
     console.error('error of connection', e)
-    process.exit(1)
+    throw e
   }
 
   const repository = new EventSequelizeRepository();

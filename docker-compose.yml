@@ -52,15 +52,15 @@ services:
     command: ["npm", "start"]
     depends_on:
       - mysql
+      - auth-service
+      - calendar-bff-service
 
   calendar-ui:
     image: calendar-ui:latest
     build:
       context: ./calendar-ui
     ports:
-      - "3000:3000"
-    environment:
-      - VITE_API_URL=http://calendar-bff-service:8083
+      - "80:80"
     depends_on:
       - auth-service
       - calendar-bff-service
